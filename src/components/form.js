@@ -30,6 +30,25 @@ async function getAllGists(userName) {
 
 	return gistDetails;
 }
+async function getAllForks(forkURL) {
+	var forkDetails;
+	await fetch(forkURL)
+		.then((res) => {
+			// if (res.length == 0) {
+			// 	return;
+			// }
+			if (!res.ok) {
+				if (res.status == 404) throw new Error(`User does not exist!!`);
+				else throw new Error(res);
+			}
+			return res.json();
+		})
+		.then((data) => {
+			forkDetails = JSON.parse(JSON.stringify(data));
+		});
+	console.log("DETAILS", forkDetails);
+	return forkDetails;
+}
 
 class GitForm extends Component {
 	// const GitForm = props () =>{
@@ -39,6 +58,7 @@ class GitForm extends Component {
 			username: "",
 			gists: [],
 			g: "",
+			forks: [],
 		};
 		this.handleClick = this.handleClick.bind(this);
 		this.inputChange = this.inputChange.bind(this);
@@ -70,16 +90,54 @@ class GitForm extends Component {
 		// 	this.setState({ gists: obj });
 		// );
 		// console.log(obj.data);
-
+		var arr = [];
 		const gistDetails = await getAllGists(this.state.username);
-		console.log(1234, gistDetails);
+		const test = Object.values(gistDetails);
+		console.log(gistDetails[0].forks_url);
+
+		test.forEach((element) => {
+			console.log("OOO", element.forks_url);
+			arr = arr.concat(element.forks_url);
+		});
+		arr.forEach((element) => {
+			// const forkDetails = await getAllForks(element);
+			// const test = Object.values(forkDetails);
+			// // console.log("heret", test);
+
+			// if (forkDetails.length != 0) {
+			// 	console.log("heret", test[0].owner.login);
+			// }
+			console.log(element);
+			this.getForks(element);
+		});
+
+		console.log(1234, gistDetails, arr);
 		this.setState({ gists: gistDetails });
-		console.log(this.state.gists);
-		console.log(gistDetails[0]["files"][0]);
+		// console.log(this.state.gists);
+		// console.log(gistDetails[0]["files"][0]);
 		// const test = JSON.stringify(gistDetails[0].files);
-		const test = Object.values(gistDetails[0].files);
-		console.log(test[0].language);
+		// const test = Object.values(gistDetails[0].files);
+		// console.log("here", test[0].language);
 		// return obj;
+	}
+
+	async getForks(event) {
+		const forkDetails = await getAllForks(event);
+		const test = Object.values(forkDetails);
+		console.log("heret", test);
+
+		var arr = [...this.state.forks];
+
+		if (forkDetails.length != 0) {
+			console.log("heret", test[0].owner.login);
+			// this.setState({ forks: test[0].owner.login });
+			arr = arr.concat(test[0].owner.login);
+		} else {
+			// this.setState({ forks: 0 });
+			arr = arr.concat("none");
+		}
+		this.setState({ forks: arr });
+		// return 1;
 	}
 
 	render() {
@@ -100,21 +158,25 @@ class GitForm extends Component {
 					name="username"
 					// onClick={this.handleClick}
 					onClick={this.getGists}
+					// onClick={this.getForks(this.state.forks)}
 				>
 					Submit
 				</button>
 				{/* <div>{this.state.gists}</div> */}
 				<ul>
-					{this.state.gists.map((commit) => (
+					{this.state.gists.map((commit, key) => (
 						<li key={commit.id}>
-							{commit.description}
+							Description of Gist {commit.description}
+							<div>forks {this.state.forks[key]}</div>
 							<ul>
 								{Object.values(commit.files).map((name) => (
 									<li> {name.language} </li>
 								))}
+								{/* {this.getForks(commit.forks_url)} */}
 							</ul>
 						</li>
 					))}
+					{/* {this.state.forks} */}
 				</ul>
 			</div>
 		);
