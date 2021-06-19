@@ -26,21 +26,20 @@ class Expand extends Component {
 			username: "",
 			gists: [],
 		};
-		// this.getData = this.getData.bind(this);
 	}
-	// async getData(gistID) {
-	// 	const gists = await getGists(gistID);
-	// 	const test = Object.values(gists);
-	// 	console.log(test);
-	// }
 	render() {
 		const { state } = this.props.location;
-		// this.getData(state);
 		return (
 			<div>
 				The Gists are:
-				{state.map((elem) => (
-					<div> {elem} </div>
+				{this.props.location.state.content.map((elem, key) => (
+					<div>
+						<div>Filename: </div>
+						<div>{this.props.location.state.fileName[key]} </div>
+						<div>File content:</div>
+						<div> {elem} </div>
+						<div>.........</div>
+					</div>
 				))}
 			</div>
 		);
