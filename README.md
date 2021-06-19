@@ -1,3 +1,7 @@
+# ALL FUNCTIONALITIES IMPLEMENTED
+
+# SAMPLE PICTURES ATTACHED IN THE PUBLIC FOLDER
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
