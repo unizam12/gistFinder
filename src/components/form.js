@@ -85,11 +85,8 @@ class GitForm extends Component {
 		this.state = {
 			username: "",
 			gists: [],
-			g: "",
 			forks: [],
-			num: 0,
 			id: [],
-			keyy: [],
 		};
 		this.inputChange = this.inputChange.bind(this);
 		this.getGists = this.getGists.bind(this);
@@ -192,16 +189,30 @@ class GitForm extends Component {
 						justify="center"
 						alignItems="center"
 						direction="row"
+						style={{ padding: "10px" }}
 					>
-						<Grid item xs={3}>
+						<Grid item xs={3} style={{ padding: "2px" }}>
 							{this.state.gists.map((commit, key) => (
-								<Paper key={commit.id} style={{ color: "red" }}>
+								<Paper
+									key={commit.id}
+									style={{
+										color: "red",
+										backgroundColor: "#ADD8E6",
+										padding: "12px",
+									}}
+								>
 									Description of Gist: {commit.description}
 									<div>Forks: {this.state.forks[key]}</div>
 									Languages:
 									<Grid item xs={12}>
 										{Object.values(commit.files).map((name) => (
-											<Paper className="classes.paper"> {name.language} </Paper>
+											<Paper
+												className="classes.paper"
+												style={{ backgroundColor: "#DCDCDC" }}
+											>
+												{" "}
+												{name.language}{" "}
+											</Paper>
 										))}
 										<div>
 											<button
